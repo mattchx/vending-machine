@@ -56,9 +56,9 @@ const Dashboard = () => {
   const [error, setError] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const submitHandler = () => {
-    console.log(sumOfCoinsInserted);
-    onOpen(true);
+  const resetDashboard = () => {
+    setInsertedCoins(emptyInsertedCoins);
+    setProductOrder(emptyProductOrder);
   };
 
   const handleSetCoinTotal = total => {
@@ -68,9 +68,8 @@ const Dashboard = () => {
     setProductTotal(total);
   };
 
-  const resetDashboard = () => {
-    setInsertedCoins(emptyInsertedCoins);
-    setProductOrder(emptyProductOrder);
+  const submitHandler = () => {
+    onOpen(true);
   };
 
   useEffect(() => {
@@ -94,6 +93,7 @@ const Dashboard = () => {
           handleSetCoinTotal={handleSetCoinTotal}
           insertedCoins={insertedCoins}
           setInsertedCoins={setInsertedCoins}
+          setError={setError}
         />
 
         <Text fontWeight="bold" mt={2}>
@@ -113,9 +113,15 @@ const Dashboard = () => {
           </Flex>
         </Flex>
         <Flex justify="flex-end">
-          <Button onClick={submitHandler} colorScheme="orange">
-            GET DRINKS
-          </Button>
+          {!error ? (
+            <Button onClick={submitHandler} colorScheme="orange">
+              GET DRINKS
+            </Button>
+          ) : (
+            <Button disabled colorScheme="orange">
+              GET DRINKS
+            </Button>
+          )}
         </Flex>
       </Box>
       <>

@@ -9,14 +9,17 @@ import {
   Lorem,
   useDisclosure,
 } from '@chakra-ui/react';
+import { set } from 'react-hook-form';
 
 const CoinInterface = ({
   insertedCoins,
   setInsertedCoins,
   handleSetCoinTotal,
+  setError,
 }) => {
   const calcOrderTotal = () => {
-    const total = Object.entries(insertedCoins).reduce((acc, next) => {
+    const arrOfCoins = Object.entries(insertedCoins);
+    const total = arrOfCoins.reduce((acc, next) => {
       const key = next[0];
       const value = next[1];
       switch (key) {
@@ -32,7 +35,13 @@ const CoinInterface = ({
           return 0;
       }
     }, 0);
-    return total;
+    if (arrOfCoins.some(item => item[1] < 0) || total === 0) {
+      setError(true);
+      return 0;
+    } else {
+      setError(false);
+      return total;
+    }
   };
   useEffect(() => {
     handleSetCoinTotal(calcOrderTotal());
