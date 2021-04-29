@@ -24,26 +24,45 @@ import CoinInterface from './interface/CoinInterface';
 import ProductInterface from './interface/ProductInterface';
 
 const Dashboard = () => {
+  const [coinsOnHand, setCoinsOnHand] = useState({
+    pennies: 100,
+    nickels: 10,
+    dimes: 5,
+    quarters: 25,
+  });
+  const [remainingInventory, setRemainingInventory] = useState({
+    coke: 5,
+    pepsi: 15,
+  });
 
-    
+  const emptyInsertedCoins = {
+    pennies: '',
+    nickels: '',
+    dimes: '',
+    quarters: '',
+  };
+  const emptyProductOrder = {
+    coke: '',
+    pepsi: '',
+  };
+  const [insertedCoins, setInsertedCoins] = useState(emptyInsertedCoins);
+  const [productOrder, setProductOrder] = useState(emptyProductOrder);
 
-  const [coinTotal, setCoinTotal] = useState(0);
+  const [sumOfCoinsInserted, setSumOfCoinsInserted] = useState(0);
   const [productTotal, setProductTotal] = useState(0);
-
-  const [productOrder, setProductOrder] = useState({});
 
   const [error, setError] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const submitHandler = () => {
+    console.log(sumOfCoinsInserted);
     onOpen(true);
   };
 
   const handleSetCoinTotal = total => {
-    setCoinTotal(total);
+    setSumOfCoinsInserted(total);
   };
-  const handleProduct = (details, total) => {
-    setProductOrder(details);
+  const handleSetProductTotal = total => {
     setProductTotal(total);
   };
 
@@ -53,6 +72,17 @@ const Dashboard = () => {
       currency: 'USD',
     });
   };
+
+  const resetDashboard = () => {
+    setInsertedCoins(emptyInsertedCoins);
+    setProductOrder(emptyProductOrder);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetDashboard();
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -65,14 +95,22 @@ const Dashboard = () => {
       >
         <Text fontWeight="bold">COIN INFORMATION</Text>
 
-        <CoinInterface handleSetCoinTotal={handleSetCoinTotal} />
+        <CoinInterface
+          handleSetCoinTotal={handleSetCoinTotal}
+          insertedCoins={insertedCoins}
+          setInsertedCoins={setInsertedCoins}
+        />
 
         <Text fontWeight="bold" mt={2}>
           PRODUCTS INFORMATION
         </Text>
 
         <Flex ml={3} align="center" justify="space-around">
-          <ProductInterface handleProduct={handleProduct} />
+          <ProductInterface
+            handleSetProductTotal={handleSetProductTotal}
+            productOrder={productOrder}
+            setProductOrder={setProductOrder}
+          />
 
           <Flex align="center" justify="space-between">
             <Text fontWeight="bold">Order Total:</Text>
@@ -94,11 +132,12 @@ const Dashboard = () => {
             <ModalBody>
               <Text>Your order total is: {dollarFormatter(productTotal)}</Text>
               <Text>
-                The value of coins inserted is: {dollarFormatter(coinTotal)}
+                The value of coins inserted is:{' '}
+                {dollarFormatter(sumOfCoinsInserted)}
               </Text>
               <Text>
                 Your Change due is :{' '}
-                {dollarFormatter(coinTotal - productTotal)}
+                {dollarFormatter(sumOfCoinsInserted - productTotal)}
               </Text>
             </ModalBody>
             <ModalFooter>

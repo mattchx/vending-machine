@@ -1,33 +1,19 @@
 import { useState, useEffect } from 'react';
-import {
-  Box,
-  Text,
-  Button,
-  Flex,
-  Spacer,
-  Input,
-  Lorem,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Text, Flex, Spacer, Input } from '@chakra-ui/react';
 
-const ProductInterface = ({ handleProduct }) => {
-  const emptyProductOrder = {
-    coke: '',
-    pepsi: '',
-  };
-  const [productOrder, setProductOrder] = useState(emptyProductOrder);
-
+const ProductInterface = ({
+  productOrder,
+  setProductOrder,
+  handleSetProductTotal,
+}) => {
   const calcProductTotal = () => {
-    return productOrder.coke * 25 + productOrder.pepsi * 36;
+    const total = productOrder.coke * 25 + productOrder.pepsi * 36;
+    return total;
   };
 
   useEffect(() => {
-    handleProduct(productOrder, calcProductTotal());
+    handleSetProductTotal(calcProductTotal());
   }, [productOrder]);
-
-  const resetState = () => {
-    setProductOrder(emptyProductOrder)
-  }
 
   return (
     <>

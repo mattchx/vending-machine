@@ -10,15 +10,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-const CoinInterface = ({handleSetCoinTotal}) => {
-  const emptyInsertedCoins = {
-    pennies: '',
-    nickels: '',
-    dimes: '',
-    quarters: '',
-  };
-  const [insertedCoins, setInsertedCoins] = useState(emptyInsertedCoins);
-
+const CoinInterface = ({
+  insertedCoins,
+  setInsertedCoins,
+  handleSetCoinTotal,
+}) => {
   const calcOrderTotal = () => {
     const total = Object.entries(insertedCoins).reduce((acc, next) => {
       const key = next[0];
@@ -38,9 +34,9 @@ const CoinInterface = ({handleSetCoinTotal}) => {
     }, 0);
     return total;
   };
-  useEffect(()=> {
-    handleSetCoinTotal(calcOrderTotal())
-  })
+  useEffect(() => {
+    handleSetCoinTotal(calcOrderTotal());
+  }, [insertedCoins]);
 
   return (
     <>
