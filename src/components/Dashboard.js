@@ -1,102 +1,113 @@
-import React, { useState } from 'react';
-import { Box, Text, Button, Flex, Spacer, Input } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Text,
+  Button,
+  Flex,
+  Spacer,
+  Input,
+  Lorem,
+  useDisclosure,
+} from '@chakra-ui/react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
+
+// import PopUp from './PopUp';
+import CoinInterface from './interface/CoinInterface';
+import ProductInterface from './interface/ProductInterface';
 
 const Dashboard = () => {
-  const [inputedCoins, setInputedCoins] = useState({});
-  const [orderTotal, setOrderTotal] = useState(0);
+
+    
+
+  const [coinTotal, setCoinTotal] = useState(0);
+  const [productTotal, setProductTotal] = useState(0);
+
+  const [productOrder, setProductOrder] = useState({});
+
   const [error, setError] = useState(false);
-  //   let countTotal = 0;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = data => {
-    // for (let {key, value} of data.entries()) {
-    //     const intNum = parseInt(value)
-    //     if ( intNum < 0 || intNum % 1 !== 0) setError(true)
-    // }
-    // const coinsArray = Object.entries(data).map(e => ({ [e[0]]: parseInt(e[1]) }));
-    console.log(data);
-    setInputedCoins(data);
-    setOrderTotal(calcTotal(data));
+  const submitHandler = () => {
+    onOpen(true);
   };
 
-  const calcTotal = data => {
-    const total = Object.entries(data).reduce((acc, next) => {
-      const key = next[0];
-      const value = next[1];
+  const handleSetCoinTotal = total => {
+    setCoinTotal(total);
+  };
+  const handleProduct = (details, total) => {
+    setProductOrder(details);
+    setProductTotal(total);
+  };
 
-      switch (key) {
-        case 'pennies':
-          return value * 1 + acc;
-        case 'nickels':
-          return value * 5 + acc;
-        case 'dimes':
-          return value * 10 + acc;
-        case 'quarters':
-          return value * 25 + acc;
-        default:
-          return 0;
-      }
-    }, 0);
-    return total / 100;
+  const dollarFormatter = cents => {
+    return (cents / 100).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
   };
 
   return (
-    <Box p={4} maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <Box
+        p={4}
+        maxW="sm"
+        borderWidth="1px"
+        borderRadius="lg"
+        overflow="hidden"
+      >
         <Text fontWeight="bold">COIN INFORMATION</Text>
-        <Flex ml={3} align="center" justify="space-around">
-          <Box mr={3}>
-            <Text>Pennies 1¢</Text>
-            <Input min="0" type="number" {...register('pennies')} w={70} />
-          </Box>
-          <Box mr={3}>
-            <Text>Nickels 5¢</Text>
-            <Input min="0" type="number" {...register('nickels')} w={70} />
-          </Box>
-          <Box mr={3}>
-            <Text>Dimes 10¢</Text>
-            <Input min="0" type="number" {...register('dimes')} w={70} />
-          </Box>
-          <Box mr={3}>
-            <Text>Quarters 25¢</Text>
-            <Input min="0" type="number" {...register('quarters')} w={70} />
-          </Box>
-        </Flex>
+
+        <CoinInterface handleSetCoinTotal={handleSetCoinTotal} />
 
         <Text fontWeight="bold" mt={2}>
           PRODUCTS INFORMATION
         </Text>
+
         <Flex ml={3} align="center" justify="space-around">
-          <Box mr={3}>
-            <Flex align="center" justify="space-around">
-              <Text>Coke</Text>
-              <Spacer w={7} />
-              <Input min="0" type="number" w={70} />
-            </Flex>
-            <Flex align="center">
-              <Text>Pepsi</Text>
-              <Spacer />
-              <Input min="0" type="number" w={70} />
-            </Flex>
-          </Box>
+          <ProductInterface handleProduct={handleProduct} />
+
           <Flex align="center" justify="space-between">
             <Text fontWeight="bold">Order Total:</Text>
-            <Text>{orderTotal && orderTotal.toLocaleString("en-US", {style:"currency", currency:"USD"})}</Text>
+            <Text>{productTotal && dollarFormatter(productTotal)}</Text>
           </Flex>
         </Flex>
         <Flex justify="flex-end">
-          <Button type="submit" colorScheme="orange">
+          <Button onClick={submitHandler} colorScheme="orange">
             GET DRINKS
           </Button>
         </Flex>
-      </form>
-    </Box>
+      </Box>
+      <>
+        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Here you go:</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Your order total is: {dollarFormatter(productTotal)}</Text>
+              <Text>
+                The value of coins inserted is: {dollarFormatter(coinTotal)}
+              </Text>
+              <Text>
+                Your Change due is :{' '}
+                {dollarFormatter(coinTotal - productTotal)}
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={onClose}>Close</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    </>
   );
 };
 
