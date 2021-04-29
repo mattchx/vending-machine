@@ -16,9 +16,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Container mt={24}>
-        <Center>
-          <Dashboard />
-        </Center>
+        <Dashboard />
       </Container>
     </ChakraProvider>
   );
