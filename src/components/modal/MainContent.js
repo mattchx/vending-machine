@@ -1,21 +1,30 @@
 import React from 'react';
-import { ModalBody, ModalHeader, Text } from '@chakra-ui/react';
+import {
+  ModalBody,
+  ModalHeader,
+  Text,
+  UnorderedList,
+  ListItem,
+} from '@chakra-ui/react';
 
 import dollarFormatter from '../../utils/dollarFormatter';
 
-const MainContent = ({ productTotal, sumOfCoinsInserted }) => {
+const MainContent = ({ productTotal, sumOfCoinsInserted, productOrder }) => {
   return (
     <>
       <ModalBody>
         <ModalHeader>Here you go:</ModalHeader>
-        <Text>Your order total is: {dollarFormatter(productTotal)}</Text>
         <Text>
-          The value of coins inserted is: {dollarFormatter(sumOfCoinsInserted)}
-        </Text>
-        <Text>
-          Your Change due is :{' '}
+          Your change due is :
           {dollarFormatter(sumOfCoinsInserted - productTotal)}
         </Text>
+        <Text>Your order details:</Text>
+        <UnorderedList>
+          {productOrder.coke && <ListItem>Coke x {productOrder.coke}</ListItem>}
+          {productOrder.pepsi && (
+            <ListItem>Pepsi x {productOrder.pepsi}</ListItem>
+          )}
+        </UnorderedList>
       </ModalBody>
     </>
   );

@@ -132,6 +132,7 @@ const Dashboard = () => {
             <MainContent
               productTotal={productTotal}
               sumOfCoinsInserted={sumOfCoinsInserted}
+              productOrder={productOrder}
             />
             <ModalFooter>
               <Button onClick={onClose}>Close</Button>
