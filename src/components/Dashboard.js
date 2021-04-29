@@ -19,9 +19,11 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
-// import PopUp from './PopUp';
+import dollarFormatter from '../utils/dollarFormatter';
+import MainContent from './modal/MainContent';
 import CoinInterface from './interface/CoinInterface';
 import ProductInterface from './interface/ProductInterface';
+import AlertBox from './alert/AlertBox';
 
 const Dashboard = () => {
   const [coinsOnHand, setCoinsOnHand] = useState({
@@ -64,13 +66,6 @@ const Dashboard = () => {
   };
   const handleSetProductTotal = total => {
     setProductTotal(total);
-  };
-
-  const dollarFormatter = cents => {
-    return (cents / 100).toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
   };
 
   const resetDashboard = () => {
@@ -127,19 +122,11 @@ const Dashboard = () => {
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Here you go:</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
-              <Text>Your order total is: {dollarFormatter(productTotal)}</Text>
-              <Text>
-                The value of coins inserted is:{' '}
-                {dollarFormatter(sumOfCoinsInserted)}
-              </Text>
-              <Text>
-                Your Change due is :{' '}
-                {dollarFormatter(sumOfCoinsInserted - productTotal)}
-              </Text>
-            </ModalBody>
+            <MainContent
+              productTotal={productTotal}
+              sumOfCoinsInserted={sumOfCoinsInserted}
+            />
             <ModalFooter>
               <Button onClick={onClose}>Close</Button>
             </ModalFooter>
