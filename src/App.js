@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Button,
-  Flex,
-  Container,
-  Center,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
+import { ChakraProvider, Container, theme } from '@chakra-ui/react';
 import Dashboard from './components/Dashboard';
 
 function App() {
