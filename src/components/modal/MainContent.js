@@ -5,11 +5,6 @@ import {
   Text,
   UnorderedList,
   ListItem,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  CloseButton,
   Box,
 } from '@chakra-ui/react';
 
