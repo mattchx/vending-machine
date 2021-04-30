@@ -56,6 +56,7 @@ const Dashboard = () => {
   const [error, setError] = useState({
     coin: false,
     product: false,
+    inventory: false,
   });
   // to do - correct  validation handling
 
@@ -85,10 +86,18 @@ const Dashboard = () => {
   };
 
   const updateInventory = () => {
-    setRemainingInventory(state => ({
-      pepsi: state.pepsi - productOrder.pepsi,
-      coke: state.coke - productOrder.coke,
-    }));
+    if (
+      remainingInventory.pepsi - productOrder.pepsi < 0 ||
+      remainingInventory.coke - productOrder.coke < 0
+    ) {
+      setError(state => ({ ...state, inventory: true }));
+    } else {
+      setError(state => ({ ...state, inventory: false }));
+      setRemainingInventory(state => ({
+        pepsi: state.pepsi - productOrder.pepsi,
+        coke: state.coke - productOrder.coke,
+      }));
+    }
   };
 
   return (
@@ -148,6 +157,7 @@ const Dashboard = () => {
               productTotal={productTotal}
               sumOfCoinsInserted={sumOfCoinsInserted}
               productOrder={productOrder}
+              error={error}
             />
             <ModalFooter>
               <Button onClick={onClose}>Close</Button>
