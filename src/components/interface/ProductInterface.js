@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Box, Text, Flex, Spacer, Input } from '@chakra-ui/react';
 
 const ProductInterface = ({
