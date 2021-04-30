@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Text,
-  Button,
-  Flex,
-  Spacer,
-  Input,
-  Lorem,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Text, Button, Flex, useDisclosure } from '@chakra-ui/react';
 import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
-  ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
 
@@ -23,7 +12,6 @@ import dollarFormatter from '../utils/dollarFormatter';
 import MainContent from './modal/MainContent';
 import CoinInterface from './interface/CoinInterface';
 import ProductInterface from './interface/ProductInterface';
-import AlertBox from './alert/AlertBox';
 
 const Dashboard = () => {
   const [coinsOnHand, setCoinsOnHand] = useState([
@@ -126,7 +114,7 @@ const Dashboard = () => {
     } else {
       setError(state => ({ ...state, changeDue: false }));
     }
-    //const updateCoinsArray = [{},{},{},{}];
+
     // how to remove coins from on hand
     console.log(changeDue);
     const updateCoinsArray = coinsOnHand.map((coin, i) => {
@@ -140,18 +128,10 @@ const Dashboard = () => {
       // take the updateAmount and remove it from changeDue
       changeDue -= updateAmount * denom;
       console.log(changeDue);
-      // check if there is remaining change due
-      // push object to update Array
-      //updateCoinsArray.push({ - updateAmount})
+
       return { [denom]: quantity - updateAmount };
     });
-    console.log(coinsOnHand.updateCoinsArray);
-    // const updatedCoinsArrayTotal =
-    //   updateCoinsArray[0] * 25 +
-    //   updateCoinsArray[1] * 10 +
-    //   updateCoinsArray[2] * 5 +
-    //   updateCoinsArray[3] * 1;
-    // console.log('updatedCoinsTotal:' + updatedCoinsArrayTotal);
+    console.log(coinsOnHand, updateCoinsArray);
     if (changeDue > 0) {
       setError(state => ({ ...state, changeDue: true }));
       console.log('insufficient change error');
@@ -159,26 +139,6 @@ const Dashboard = () => {
     } else {
       setError(state => ({ ...state, changeDue: false }));
       setCoinsOnHand(updateCoinsArray);
-      //   setCoinsOnHand(state => {
-      //     console.log(coinsOnHand[0]['25'], updateCoinsArray[0]);
-      //     console.log(state[0]['25'], updateCoinsArray[0]);
-      //     return [
-      //       { 25: state[0]['25'] - updateCoinsArray[0] },
-      //       { 10: state[1]['10'] - updateCoinsArray[1] },
-      //       { 5: state[2]['5'] - updateCoinsArray[2] },
-      //       { 1: state[3]['1'] - updateCoinsArray[3] },
-      //     ];
-      //   });
-      //     coinsOnHand.map((item, i) => {
-      //       //   console.log(typeof Object.keys(item), typeof parseInt(item[Object.keys(item)]);
-      //       //   console.log(Object.keys(item), parseInt(item[Object.keys(item)]));
-      //       return {
-      //         [Object.keys(item)]:
-      //           parseInt(item[Object.keys(item)]) - updateCoinsArray[i],
-      //       };
-      //     }),
-      //   ]);
-
       console.log(coinsOnHand);
       console.log('coins on hand successfully updated');
     }
