@@ -110,24 +110,26 @@ const Dashboard = () => {
   };
 
   const updateCoinsOnHand = () => {
-    //*** removed for testing ***/ /
+    //*** remove for testing ***/ /
     // if (error.inventory) return;
     let changeDue = sumOfCoinsInserted - productTotal;
     const sumOfCoinsOnHand = coinsOnHand.reduce((acc, next) => {
       return acc + parseInt(Object.keys(next)) * next[Object.keys(next)];
     }, 0);
-    console.log(changeDue);
-    // console.log(sumOfCoinsOnHand)
+    console.log('changeDue:', changeDue);
+    console.log('sumOfCoinsOnHand:', sumOfCoinsOnHand);
     // check if total change due > sum of coins on hand
     if (changeDue > sumOfCoinsOnHand) {
       setError(state => ({ ...state, changeDue: true }));
-      //*** removed for testing ***/ //return;
+      //*** remove for testing ***//
+      return console.log('insufficent change');
     } else {
       setError(state => ({ ...state, changeDue: false }));
     }
-    const updateCoinsArray = [0, 0, 0, 0];
+    //const updateCoinsArray = [{},{},{},{}];
     // how to remove coins from on hand
-    coinsOnHand.forEach((coin, i) => {
+    console.log(changeDue);
+    const updateCoinsArray = coinsOnHand.map((coin, i) => {
       const denom = parseInt(Object.keys(coin));
       const quantity = coin[denom];
       //console.log(typeof denom, typeof quantity);
@@ -135,36 +137,52 @@ const Dashboard = () => {
       const amount = Math.floor(changeDue / denom);
       console.log(amount);
       const updateAmount = amount > quantity ? quantity : amount;
-      updateCoinsArray[i] = updateAmount;
       // take the updateAmount and remove it from changeDue
       changeDue -= updateAmount * denom;
       console.log(changeDue);
       // check if there is remaining change due
-      if (changeDue === 0) {
-        return;
-      }
-      //
+      // push object to update Array
+      //updateCoinsArray.push({ - updateAmount})
+      return { [denom]: quantity - updateAmount };
     });
-    const updatedCoinsArrayTotal =
-      updateCoinsArray[0] * 25 +
-      updateCoinsArray[1] * 10 +
-      updateCoinsArray[2] * 5 +
-      updateCoinsArray[3] * 1;
-    console.log('updatedCoinsTotal:' + updatedCoinsArrayTotal);
+    console.log(coinsOnHand.updateCoinsArray);
+    // const updatedCoinsArrayTotal =
+    //   updateCoinsArray[0] * 25 +
+    //   updateCoinsArray[1] * 10 +
+    //   updateCoinsArray[2] * 5 +
+    //   updateCoinsArray[3] * 1;
+    // console.log('updatedCoinsTotal:' + updatedCoinsArrayTotal);
     if (changeDue > 0) {
       setError(state => ({ ...state, changeDue: true }));
-      console.log('changeDue error');
+      console.log('insufficient change error');
+      return;
     } else {
-      setCoinsOnHand(state => ({
-        quarters: state.quarters - updateCoinsArray[0],
-        dimes: state.dimes - updateCoinsArray[1],
-        nickels: state.nickels - updateCoinsArray[2],
-        pennies: state.pennies - updateCoinsArray[3],
-      }));
+      setError(state => ({ ...state, changeDue: false }));
+      setCoinsOnHand(updateCoinsArray);
+      //   setCoinsOnHand(state => {
+      //     console.log(coinsOnHand[0]['25'], updateCoinsArray[0]);
+      //     console.log(state[0]['25'], updateCoinsArray[0]);
+      //     return [
+      //       { 25: state[0]['25'] - updateCoinsArray[0] },
+      //       { 10: state[1]['10'] - updateCoinsArray[1] },
+      //       { 5: state[2]['5'] - updateCoinsArray[2] },
+      //       { 1: state[3]['1'] - updateCoinsArray[3] },
+      //     ];
+      //   });
+      //     coinsOnHand.map((item, i) => {
+      //       //   console.log(typeof Object.keys(item), typeof parseInt(item[Object.keys(item)]);
+      //       //   console.log(Object.keys(item), parseInt(item[Object.keys(item)]));
+      //       return {
+      //         [Object.keys(item)]:
+      //           parseInt(item[Object.keys(item)]) - updateCoinsArray[i],
+      //       };
+      //     }),
+      //   ]);
+
+      console.log(coinsOnHand);
       console.log('coins on hand successfully updated');
     }
     console.log(coinsOnHand, updateCoinsArray);
-    // return console.log(Object.keys(coinsOnHand[1]));
   };
 
   return (
