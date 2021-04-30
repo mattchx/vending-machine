@@ -24,25 +24,28 @@ const MainContent = ({
   return (
     <>
       <ModalBody>
-        {error.inventory ? (
+        {error.inventory || error.payment || error.changeDue ? (
           <>
             <Box mt={10} mb={6} bg="tomato" borderRadius="5px" color="white">
               <ModalHeader>There's an issue with your order.</ModalHeader>
             </Box>
-            <Text ml={3}>
-              These drinks are sold out, your purchase cannot be processed!
-            </Text>
-          </>
-        ) : error.payment ? (
-          <>
-            <Box mt={10} mb={6} bg="tomato" borderRadius="5px" color="white">
-              <ModalHeader>There's an issue with your order.</ModalHeader>
-            </Box>
-            <Text ml={3}>
-              The total coins you inserted (
-              {dollarFormatter(sumOfCoinsInserted)}) is not enough to cover this
-              order ({dollarFormatter(productTotal)}).
-            </Text>
+            {error.inventory && (
+              <Text ml={3}>
+                These drinks are sold out, your purchase cannot be processed!
+              </Text>
+            )}
+            {error.payment && (
+              <Text ml={3}>
+                The total coins you inserted (
+                {dollarFormatter(sumOfCoinsInserted)}) is not enough to cover
+                this order ({dollarFormatter(productTotal)}).
+              </Text>
+            )}
+            {error.changeDue && (
+              <Text ml={3}>
+                There is not enough change in the machine to process your order.
+              </Text>
+            )}
           </>
         ) : (
           <>
