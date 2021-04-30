@@ -99,7 +99,7 @@ const Dashboard = () => {
 
   const updateCoinsOnHand = () => {
     //*** remove for testing ***/ /
-    // if (error.inventory) return;
+    if (error.inventory) return;
     let changeDue = sumOfCoinsInserted - productTotal;
     const sumOfCoinsOnHand = coinsOnHand.reduce((acc, next) => {
       return acc + parseInt(Object.keys(next)) * next[Object.keys(next)];
