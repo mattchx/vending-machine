@@ -1,15 +1,5 @@
-import { useEffect, useState } from 'react';
-import {
-  Box,
-  Text,
-  Button,
-  Flex,
-  Spacer,
-  Input,
-  Lorem,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { set } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Box, Text, Flex, Input } from '@chakra-ui/react';
 
 const CoinInterface = ({
   insertedCoins,
