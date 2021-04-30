@@ -5,10 +5,21 @@ const ProductInterface = ({
   productOrder,
   setProductOrder,
   handleSetProductTotal,
+  setError,
 }) => {
   const calcProductTotal = () => {
-    const total = productOrder.coke * 25 + productOrder.pepsi * 36;
-    return total;
+    if (
+      productOrder.coke + productOrder.pepsi === 0 ||
+      productOrder.coke < 0 ||
+      productOrder.pepsi < 0
+    ) {
+      setError(state => ({ ...state, product: true }));
+      return 0;
+    } else {
+      setError(state => ({ ...state, product: false }));
+      const total = productOrder.coke * 25 + productOrder.pepsi * 36;
+      return total;
+    }
   };
 
   useEffect(() => {

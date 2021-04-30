@@ -53,7 +53,8 @@ const Dashboard = () => {
   const [sumOfCoinsInserted, setSumOfCoinsInserted] = useState(0);
   const [productTotal, setProductTotal] = useState(0);
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ coin: false, product: false });
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const resetDashboard = () => {
@@ -105,6 +106,7 @@ const Dashboard = () => {
             handleSetProductTotal={handleSetProductTotal}
             productOrder={productOrder}
             setProductOrder={setProductOrder}
+            setError={setError}
           />
 
           <Flex align="center" justify="space-between">
@@ -113,7 +115,7 @@ const Dashboard = () => {
           </Flex>
         </Flex>
         <Flex justify="flex-end">
-          {!error ? (
+          {!error.coin && !error.product ? (
             <Button onClick={submitHandler} colorScheme="orange">
               GET DRINKS
             </Button>

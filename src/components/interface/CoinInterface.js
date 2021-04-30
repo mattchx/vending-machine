@@ -36,10 +36,10 @@ const CoinInterface = ({
       }
     }, 0);
     if (arrOfCoins.some(item => item[1] < 0) || total === 0) {
-      setError(true);
+      setError(state => ({ ...state, coin: true }));
       return 0;
     } else {
-      setError(false);
+      setError(state => ({ ...state, coin: false }));
       return total;
     }
   };
