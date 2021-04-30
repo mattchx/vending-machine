@@ -12,7 +12,8 @@ const ProductInterface = ({
     if (
       productOrder.coke + productOrder.pepsi === 0 ||
       productOrder.coke < 0 ||
-      productOrder.pepsi < 0
+      productOrder.pepsi < 0 ||
+      (productOrder.coke === '' && productOrder.pepsi === '')
     ) {
       setError(state => ({ ...state, product: true }));
       return 0;
