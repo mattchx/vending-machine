@@ -57,6 +57,7 @@ const Dashboard = () => {
     coin: false,
     product: false,
     inventory: false,
+    payment: false,
   });
   // to do - correct  validation handling
 
@@ -86,6 +87,13 @@ const Dashboard = () => {
   };
 
   const updateInventory = () => {
+    if (sumOfCoinsInserted - productTotal < 0) {
+      setError(state => ({ ...state, payment: true }));
+      return;
+    } else {
+      setError(state => ({ ...state, payment: false }));
+    }
+
     if (
       remainingInventory.pepsi - productOrder.pepsi < 0 ||
       remainingInventory.coke - productOrder.coke < 0
