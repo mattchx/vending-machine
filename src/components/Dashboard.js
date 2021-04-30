@@ -54,6 +54,7 @@ const Dashboard = () => {
   const [productTotal, setProductTotal] = useState(0);
 
   const [error, setError] = useState({ coin: false, product: false });
+  // to do - correct  validation handling
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -107,6 +108,7 @@ const Dashboard = () => {
             productOrder={productOrder}
             setProductOrder={setProductOrder}
             setError={setError}
+            inventory={remainingInventory}
           />
 
           <Flex align="center" justify="space-between">

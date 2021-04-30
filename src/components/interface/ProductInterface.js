@@ -6,6 +6,7 @@ const ProductInterface = ({
   setProductOrder,
   handleSetProductTotal,
   setError,
+  inventory,
 }) => {
   const calcProductTotal = () => {
     if (
@@ -30,7 +31,7 @@ const ProductInterface = ({
     <>
       <Box mr={3}>
         <Flex align="center" justify="space-around">
-          <Text>Coke(5): 25¢</Text>
+          <Text>Coke({inventory.coke}): 25¢</Text>
           <Spacer w={7} />
           <Input
             value={productOrder.coke}
@@ -47,7 +48,7 @@ const ProductInterface = ({
         </Flex>
 
         <Flex align="center">
-          <Text>Pepsi(15): 36¢</Text>
+          <Text>Pepsi({inventory.pepsi}): 36¢</Text>
           <Spacer />
           <Input
             value={productOrder.pepsi}
