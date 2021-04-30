@@ -26,12 +26,12 @@ import ProductInterface from './interface/ProductInterface';
 import AlertBox from './alert/AlertBox';
 
 const Dashboard = () => {
-  const [coinsOnHand, setCoinsOnHand] = useState({
-    pennies: 100,
-    nickels: 10,
-    dimes: 5,
-    quarters: 25,
-  });
+  const [coinsOnHand, setCoinsOnHand] = useState([
+    { 25: 25 },
+    { 10: 5 },
+    { 5: 10 },
+    { 1: 100 },
+  ]);
   const [remainingInventory, setRemainingInventory] = useState({
     coke: 5,
     pepsi: 15,
@@ -58,6 +58,7 @@ const Dashboard = () => {
     product: false,
     inventory: false,
     payment: false,
+    changeDue: false,
   });
   // to do - correct  validation handling
 
@@ -83,6 +84,7 @@ const Dashboard = () => {
 
   const submitHandler = () => {
     updateInventory();
+    updateCoinsOnHand();
     onOpen(true);
   };
 
@@ -93,7 +95,6 @@ const Dashboard = () => {
     } else {
       setError(state => ({ ...state, payment: false }));
     }
-
     if (
       remainingInventory.pepsi - productOrder.pepsi < 0 ||
       remainingInventory.coke - productOrder.coke < 0
@@ -106,6 +107,64 @@ const Dashboard = () => {
         coke: state.coke - productOrder.coke,
       }));
     }
+  };
+
+  const updateCoinsOnHand = () => {
+    //*** removed for testing ***/ /
+    // if (error.inventory) return;
+    let changeDue = sumOfCoinsInserted - productTotal;
+    const sumOfCoinsOnHand = coinsOnHand.reduce((acc, next) => {
+      return acc + parseInt(Object.keys(next)) * next[Object.keys(next)];
+    }, 0);
+    console.log(changeDue);
+    // console.log(sumOfCoinsOnHand)
+    // check if total change due > sum of coins on hand
+    if (changeDue > sumOfCoinsOnHand) {
+      setError(state => ({ ...state, changeDue: true }));
+      //*** removed for testing ***/ //return;
+    } else {
+      setError(state => ({ ...state, changeDue: false }));
+    }
+    const updateCoinsArray = [0, 0, 0, 0];
+    // how to remove coins from on hand
+    coinsOnHand.forEach((coin, i) => {
+      const denom = parseInt(Object.keys(coin));
+      const quantity = coin[denom];
+      //console.log(typeof denom, typeof quantity);
+      // how many times does changeDue go into denom
+      const amount = Math.floor(changeDue / denom);
+      console.log(amount);
+      const updateAmount = amount > quantity ? quantity : amount;
+      updateCoinsArray[i] = updateAmount;
+      // take the updateAmount and remove it from changeDue
+      changeDue -= updateAmount * denom;
+      console.log(changeDue);
+      // check if there is remaining change due
+      if (changeDue === 0) {
+        return;
+      }
+      //
+    });
+    const updatedCoinsArrayTotal =
+      updateCoinsArray[0] * 25 +
+      updateCoinsArray[1] * 10 +
+      updateCoinsArray[2] * 5 +
+      updateCoinsArray[3] * 1;
+    console.log('updatedCoinsTotal:' + updatedCoinsArrayTotal);
+    if (changeDue > 0) {
+      setError(state => ({ ...state, changeDue: true }));
+      console.log('changeDue error');
+    } else {
+      setCoinsOnHand(state => ({
+        quarters: state.quarters - updateCoinsArray[0],
+        dimes: state.dimes - updateCoinsArray[1],
+        nickels: state.nickels - updateCoinsArray[2],
+        pennies: state.pennies - updateCoinsArray[3],
+      }));
+      console.log('coins on hand successfully updated');
+    }
+    console.log(coinsOnHand, updateCoinsArray);
+    // return console.log(Object.keys(coinsOnHand[1]));
   };
 
   return (
