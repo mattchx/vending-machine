@@ -30,7 +30,7 @@ const MainContent = ({
               <ModalHeader>There's an issue with your order.</ModalHeader>
             </Box>
             <Text ml={3}>
-              We do not have enough inventory in stock to fill your order!
+              These drinks are sold out, your purchase cannot be processed!
             </Text>
           </>
         ) : (
