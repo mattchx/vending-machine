@@ -53,7 +53,10 @@ const Dashboard = () => {
   const [sumOfCoinsInserted, setSumOfCoinsInserted] = useState(0);
   const [productTotal, setProductTotal] = useState(0);
 
-  const [error, setError] = useState({ coin: false, product: false });
+  const [error, setError] = useState({
+    coin: false,
+    product: false,
+  });
   // to do - correct  validation handling
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,15 +73,23 @@ const Dashboard = () => {
     setProductTotal(total);
   };
 
-  const submitHandler = () => {
-    onOpen(true);
-  };
-
   useEffect(() => {
     if (!isOpen) {
       resetDashboard();
     }
   }, [isOpen]);
+
+  const submitHandler = () => {
+    updateInventory();
+    onOpen(true);
+  };
+
+  const updateInventory = () => {
+    setRemainingInventory(state => ({
+      pepsi: state.pepsi - productOrder.pepsi,
+      coke: state.coke - productOrder.coke,
+    }));
+  };
 
   return (
     <>
